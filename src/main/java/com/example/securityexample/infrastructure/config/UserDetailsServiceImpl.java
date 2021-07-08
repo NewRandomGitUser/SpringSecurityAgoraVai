@@ -1,7 +1,7 @@
-package com.example.securityexample.config;
+package com.example.securityexample.infrastructure.config;
 
-import com.example.securityexample.models.MyUser;
-import com.example.securityexample.repository.MyUserRepository;
+import com.example.securityexample.infrastructure.models.MyUser;
+import com.example.securityexample.infrastructure.repository.MyUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
