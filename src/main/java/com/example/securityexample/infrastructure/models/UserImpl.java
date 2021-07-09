@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MyUser implements UserDetails, Serializable {
+public class UserImpl implements UserDetails, Serializable {
 
     private static final long serialVersionUID = 1L;
 

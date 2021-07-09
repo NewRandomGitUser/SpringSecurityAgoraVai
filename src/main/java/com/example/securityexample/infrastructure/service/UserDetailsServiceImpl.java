@@ -1,8 +1,7 @@
 package com.example.securityexample.infrastructure.service;
 
-import com.example.securityexample.infrastructure.models.MyUser;
 import com.example.securityexample.infrastructure.repository.MyUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,21 +12,28 @@ import javax.transaction.Transactional;
 
 @Transactional
 @Repository
-public class UserDetailsServiceImpl implements UserDetailsService{
+@RequiredArgsConstructor
+public class UserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
-    private MyUserRepository ur;
+    private MyUserRepository repository;
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        MyUser usuario = ur.findByLogin(login);
+        final var user = repository.findByLogin(login);
 
-        if(usuario == null){
+        if(user == null){
             throw new UsernameNotFoundException("Usuario não encontrado!");
         }
-        return new User(usuario.getUsername(), usuario.getPassword(), true, true, true, true, usuario.getAuthorities());
-    }
 
+        return new User(
+                user.getUsername(),
+                user.getPassword(),
+                true,
+                true,
+                true,
+                true,
+                user.getAuthorities());
+    }
 }
 
 

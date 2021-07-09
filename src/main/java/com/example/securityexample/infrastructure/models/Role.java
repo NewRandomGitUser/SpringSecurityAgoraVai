@@ -1,5 +1,7 @@
 package com.example.securityexample.infrastructure.models;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Entity;
@@ -7,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 public class Role implements GrantedAuthority {
 
@@ -14,23 +18,8 @@ public class Role implements GrantedAuthority {
     private String nameRole;
 
     @ManyToMany(mappedBy = "roles")
-    private List<MyUser> users;
+    private List<UserImpl> users;
 
-    public String getNomeRole() {
-        return nameRole;
-    }
-
-    public void setNomeRole(String nomeRole) {
-        this.nameRole = nomeRole;
-    }
-
-    public List<MyUser> getUsuarios() {
-        return users;
-    }
-
-    public void setUsuarios(List<MyUser> usuarios) {
-        this.users = usuarios;
-    }
 
     @Override
     public String getAuthority() {

@@ -2,7 +2,8 @@ package com.example.securityexample.infrastructure.controller;
 
 import com.example.securityexample.infrastructure.controller.request.RegistrationRequest;
 import com.example.securityexample.infrastructure.controller.response.RegistrationResponse;
-import com.example.securityexample.infrastructure.models.MyUser;
+import com.example.securityexample.infrastructure.controller.response.UserResponse;
+import com.example.securityexample.infrastructure.models.UserImpl;
 import com.example.securityexample.infrastructure.models.Role;
 import com.example.securityexample.infrastructure.repository.MyUserRepository;
 import com.example.securityexample.infrastructure.repository.RoleRepository;
@@ -12,8 +13,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,10 +29,10 @@ public class DefaultController {
     String getDefaultData() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
-        if(currentPrincipalName!="null")
-        {   MyUser user = repository.findByLogin(currentPrincipalName);
+        if(currentPrincipalName != "null")
+        {   UserImpl user = repository.findByLogin(currentPrincipalName);
             for (Role role : user.getRoles()) {
-                System.out.println(role.getNomeRole());
+                System.out.println(role.getNameRole());
             }
             return currentPrincipalName;}
         return "ok";
@@ -39,9 +41,9 @@ public class DefaultController {
     @GetMapping("/register")
     String getDefaultRegister() {
         Role role = new Role();
-        role.setNomeRole("ROLE_ADMIN");
+        role.setNameRole("ROLE_ADMIN");
         roleRepository.save(role);
-        MyUser myUser = new MyUser();
+        UserImpl myUser = new UserImpl();
         myUser.setLogin("Asas");
         myUser.setFullName("Asas");
         myUser.setPassword( new BCryptPasswordEncoder().encode("123"));
@@ -72,7 +74,7 @@ public class DefaultController {
 
     @PostMapping("/user/registration")
     ResponseEntity<RegistrationResponse> registrate(@RequestBody RegistrationRequest request) {
-        final var user = MyUser.builder()
+        final var user = UserImpl.builder()
                 .fullName(request.getFullName())
                 .login(request.getLogin())
                 .password(request.getPassword())
@@ -90,10 +92,18 @@ public class DefaultController {
         return "ok";
     }
 
-
     @GetMapping("/users")
-    String listUsers() {
-        return "ok";
+    ResponseEntity<List<UserResponse>> listUsers() {
+        final var listUser = repository.findAll();
+        List<UserResponse> userResponseList = new ArrayList<UserResponse>();
+        for (UserImpl user : listUser) {
+            final var userResponse = UserResponse
+                    .builder()
+                    .fullName(user.getFullName())
+                    .login(user.getLogin())
+                    .build();
+        }
+        return ResponseEntity.ok(userResponseList);
     }
 
     @GetMapping("/users/{id}")
@@ -105,12 +115,6 @@ public class DefaultController {
     String deleteUser() {
         return "ok";
     }
-
-
-
-
-
-
 
 
     //Criar usuário, deletar usuário, alterar role de acesso de usuário,
