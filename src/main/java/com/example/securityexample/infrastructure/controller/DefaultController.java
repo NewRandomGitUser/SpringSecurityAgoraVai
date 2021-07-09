@@ -3,8 +3,8 @@ package com.example.securityexample.infrastructure.controller;
 import com.example.securityexample.infrastructure.controller.request.RegistrationRequest;
 import com.example.securityexample.infrastructure.controller.response.RegistrationResponse;
 import com.example.securityexample.infrastructure.controller.response.UserResponse;
-import com.example.securityexample.infrastructure.models.UserImpl;
-import com.example.securityexample.infrastructure.models.Role;
+import com.example.securityexample.infrastructure.model.UserImpl;
+import com.example.securityexample.infrastructure.model.Role;
 import com.example.securityexample.infrastructure.repository.MyUserRepository;
 import com.example.securityexample.infrastructure.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@RestController
+@RestController("/api/v1/")
 @RequiredArgsConstructor
 public class DefaultController {
 
@@ -107,13 +107,22 @@ public class DefaultController {
     }
 
     @GetMapping("/users/{id}")
-    String userById() {
-        return "ok";
+    ResponseEntity<UserResponse> userById(@RequestParam String id) {
+        final var user = repository.findById(id);
+        final var userResponse = UserResponse
+                .builder()
+                .build();
+        return ResponseEntity.ok(userResponse);
     }
 
-    @GetMapping("/user/delete")
-    String deleteUser() {
-        return "ok";
+    @DeleteMapping("/user/delete")
+    ResponseEntity<UserResponse> deleteUser(@RequestParam String id) {
+        final var user = repository.findById(id);
+        final var userResponse = UserResponse
+                .builder()
+                .build();
+        repository.delete(user.get());
+        return ResponseEntity.ok(userResponse);
     }
 
 

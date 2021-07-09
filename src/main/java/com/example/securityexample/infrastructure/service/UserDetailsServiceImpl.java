@@ -22,7 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         final var user = repository.findByLogin(login);
 
         if(user == null){
-            throw new UsernameNotFoundException("Usuario não encontrado!");
+            throw new UsernameNotFoundException("User not found");
         }
 
         return new User(

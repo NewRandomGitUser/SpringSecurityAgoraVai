@@ -1,6 +1,6 @@
 package com.example.securityexample.infrastructure.repository;
 
-import com.example.securityexample.infrastructure.models.UserImpl;
+import com.example.securityexample.infrastructure.model.UserImpl;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
