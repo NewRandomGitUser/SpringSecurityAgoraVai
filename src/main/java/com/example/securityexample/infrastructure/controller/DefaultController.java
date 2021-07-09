@@ -1,15 +1,17 @@
 package com.example.securityexample.infrastructure.controller;
 
+import com.example.securityexample.infrastructure.controller.request.RegistrationRequest;
+import com.example.securityexample.infrastructure.controller.response.RegistrationResponse;
 import com.example.securityexample.infrastructure.models.MyUser;
 import com.example.securityexample.infrastructure.models.Role;
 import com.example.securityexample.infrastructure.repository.MyUserRepository;
 import com.example.securityexample.infrastructure.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 
@@ -41,8 +43,8 @@ public class DefaultController {
         roleRepository.save(role);
         MyUser myUser = new MyUser();
         myUser.setLogin("Asas");
-        myUser.setNomeCompleto("Asas");
-        myUser.setSenha( new BCryptPasswordEncoder().encode("123"));
+        myUser.setFullName("Asas");
+        myUser.setPassword( new BCryptPasswordEncoder().encode("123"));
         myUser.setRoles(Arrays.asList(role));
         repository.save(myUser);
         return "ok";
@@ -68,9 +70,19 @@ public class DefaultController {
         return "ok";
     }
 
-    @GetMapping("/user/registration")
-    String registrate() {
-        return "ok";
+    @PostMapping("/user/registration")
+    ResponseEntity<RegistrationResponse> registrate(@RequestBody RegistrationRequest request) {
+        final var user = MyUser.builder()
+                .fullName(request.getFullName())
+                .login(request.getLogin())
+                .password(request.getPassword())
+                .build();
+        repository.save(user);
+        return ResponseEntity.ok(RegistrationResponse
+                .builder()
+                .fullName(user.getFullName())
+                .login(user.getLogin())
+                .build());
     }
 
     @GetMapping("/user/role")
@@ -89,7 +101,7 @@ public class DefaultController {
         return "ok";
     }
 
-    @GetMapping("/users")
+    @GetMapping("/user/delete")
     String deleteUser() {
         return "ok";
     }

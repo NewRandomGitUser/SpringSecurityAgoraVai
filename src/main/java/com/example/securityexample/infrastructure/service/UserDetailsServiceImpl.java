@@ -1,4 +1,4 @@
-package com.example.securityexample.infrastructure.config;
+package com.example.securityexample.infrastructure.service;
 
 import com.example.securityexample.infrastructure.models.MyUser;
 import com.example.securityexample.infrastructure.repository.MyUserRepository;
