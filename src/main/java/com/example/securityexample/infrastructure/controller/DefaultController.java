@@ -25,6 +25,27 @@ public class DefaultController {
 
     private final RoleRepository roleRepository;
 
+    @GetMapping("/testeRoleAdmin")
+    String getData() {
+        return "ok";
+    }
+
+    @GetMapping("/testeRoleNotAdmin")
+    String getData2() {
+        return "ok";
+    }
+    @GetMapping("/testeRoleAdmin2")
+    String getData3() {
+        return "ok";
+    }
+
+    //Parte mais sistematizada
+    @GetMapping("/authentication")
+    String authenticate() {
+        return "ok";
+    }
+
+
     @GetMapping("/")
     String getDefaultData() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -52,25 +73,6 @@ public class DefaultController {
         return "ok";
     }
 
-    @GetMapping("/testeRoleAdmin")
-    String getData() {
-        return "ok";
-    }
-
-    @GetMapping("/testeRoleNotAdmin")
-    String getData2() {
-        return "ok";
-    }
-    @GetMapping("/testeRoleAdmin2")
-    String getData3() {
-        return "ok";
-    }
-
-    //Parte mais sistematizada
-    @GetMapping("/authentication")
-    String authenticate() {
-        return "ok";
-    }
 
     @PostMapping("/user/registration")
     ResponseEntity<RegistrationResponse> registrate(@RequestBody RegistrationRequest request) {
@@ -125,16 +127,7 @@ public class DefaultController {
         return ResponseEntity.ok(userResponse);
     }
 
-
     //Criar usuário, deletar usuário, alterar role de acesso de usuário,
-
     //Listar usuários por diferentes critérios
-
-
     //validar em uma entity
-
-//    @GetMapping("/api/v1/testeRoleAdmin2")
-//    String getData3() {
-//        return "ok";
-//    }
 }

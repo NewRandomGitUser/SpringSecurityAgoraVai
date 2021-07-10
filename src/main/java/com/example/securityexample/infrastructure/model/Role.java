@@ -13,17 +13,14 @@ import java.util.List;
 @Setter
 @Entity
 public class Role implements GrantedAuthority {
-
     @Id
     private String nameRole;
 
     @ManyToMany(mappedBy = "roles")
     private List<UserImpl> users;
 
-
     @Override
     public String getAuthority() {
-        // TODO Auto-generated method stub
         return this.nameRole;
     }
 }
